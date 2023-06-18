@@ -4,7 +4,7 @@ module.exports = async function (context, req) {
     const name = (req.query.name || (req.body && req.body.name));
     const responseMessage = 'Got request: ' + JSON.stringify(req.body);
     context.res = {
-        // status: 200, /* Defaults to 200 */
+        status: 200, /* Defaults to 200 */
         body: responseMessage
     };
 }
