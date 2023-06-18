@@ -6,6 +6,7 @@ describe("Test for Demo Function", () => {
 
   beforeEach(() => {
     context = ({ log: jest.fn() } as unknown) as Context;
+    context.bindings = { cosmosDBOutput: null};
   });
 
   const sampleRequest = {
@@ -27,6 +28,7 @@ describe("Test for Demo Function", () => {
     // Assertion
     expect(context.log).toBeCalledTimes(1);
     expect(context.res.status).toEqual(200);
+    expect(context.bindings.cosmosDBOutput).toEqual(request.body);
   });
 
   it("must have longitude", async () => {
