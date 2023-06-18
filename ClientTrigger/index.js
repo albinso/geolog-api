@@ -1,10 +1,9 @@
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
-    const name = (req.query.name || (req.body && req.body.name));
-    const responseMessage = 'Got request: ' + JSON.stringify(req.body);
+    const filteredBody = validateFields(req.body);
 
-    if (!req.body.latitude || !req.body.longitude) {
+    if (!filteredBody) {
         context.res = {
             status: 400,
             body: "Missing required field 'latitude' or 'longitude'"
@@ -13,6 +12,20 @@ module.exports = async function (context, req) {
     }
     context.res = {
         status: 200, /* Defaults to 200 */
-        body: responseMessage
+        body: filteredBody
     };
+    context.cosmosDbOutput = req.body;
 }
+
+const validateFields = (body) => {
+    const fields = ['latitude', 'longitude'];
+    let filteredBody = {};
+    for (const field of fields) {
+        if (!body[field]) {
+            return false;
+        }
+        filteredBody[field] = body[field];
+    }
+    console.log(filteredBody);
+    return filteredBody;
+};
