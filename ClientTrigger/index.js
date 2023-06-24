@@ -2,7 +2,7 @@ module.exports = async function (context, req) {
     try {
         context.log('JavaScript HTTP trigger function processed a request.');
 
-        const filteredBody = validateFields(req.body);
+        const filteredBody = req.body;
 
         if (!filteredBody) {
             context.res = {
