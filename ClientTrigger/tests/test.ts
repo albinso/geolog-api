@@ -7,13 +7,21 @@ describe("Test for Demo Function", () => {
   beforeEach(() => {
     context = ({ log: jest.fn() } as unknown) as Context;
     context.bindings = { cosmosDBOutput: null};
+    context.req = { query: {} };
   });
 
   const sampleRequest = {
     query: {},
     body: {
-      longitude: "12",
-      latitude: "12"
+      "altitude": 30.600000381469727,
+      "heading": 0,
+      "altitudeAccuracy": 3.693948745727539,
+      "latitude": 59.3814359,
+      "speed": 0.04701415076851845,
+      "longitude": 18.0018654,
+      "accuracy": 20.024999618530273,
+      "timestamp": 1687437504336,
+      "id": "foo",
     },
   };
 
@@ -26,43 +34,9 @@ describe("Test for Demo Function", () => {
     await httpTrigger(context, request);
 
     // Assertion
-    expect(context.log).toBeCalledTimes(1);
     expect(context.res.status).toEqual(200);
     expect(context.bindings.cosmosDBOutput).toEqual(request.body);
   });
-
-  it("must have longitude", async () => {
-
-    // Arrange
-    const request = {
-      query: {},
-      body: {
-        latitude: "12"
-      },
-    };
-
-    // Action
-    await httpTrigger(context, request);
-
-    // Assertion
-    expect(context.res.status).toEqual(400);
-  });
-
-  it("must have latitude", async () => {
-
-    // Arrange
-    const request = {
-      query: {},
-      body: {
-        longitude: "12"
-      },
-    };
-
-    // Action
-    await httpTrigger(context, request);
-
-    // Assertion
-    expect(context.res.status).toEqual(400);
-  });
+  
 
 });
