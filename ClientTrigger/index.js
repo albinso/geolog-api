@@ -8,6 +8,9 @@ export default async function (context, req) {
 
         const filteredBody = req.body;
 
+        let numToGet = 1;
+        
+
 
         if (!filteredBody) {
             const cosmosClient = new CosmosClient(process.env["MyAccount_COSMOSDB"]);
@@ -19,8 +22,13 @@ export default async function (context, req) {
                 }
             });
 
+            let queryString = "SELECT * FROM positions p WHERE p.timestamp > @minTimestamp AND p.timestamp < @maxTimestamp AND p.latitude > @minLatitude AND p.latitude < @maxLatitude AND p.longitude > @minLongitude AND p.longitude < @maxLongitude";
+            if(context.req.query["num"]) {
+                numToGet = context.req.query["num"];
+                queryString += " ORDER BY p.timestamp DESC OFFSET 0 LIMIT @num";
+            } 
             const querySpec = {
-                query: "SELECT * FROM positions p WHERE p.timestamp > @minTimestamp AND p.timestamp < @maxTimestamp AND p.latitude > @minLatitude AND p.latitude < @maxLatitude AND p.longitude > @minLongitude AND p.longitude < @maxLongitude",
+                query: queryString,
                 parameters: [
                     {
                         name: "@minTimestamp",
@@ -45,6 +53,10 @@ export default async function (context, req) {
                     {
                         name: "@maxLongitude",
                         value: parseInt(context.req.query["maxLongitude"])
+                    },
+                    {
+                        name: "@num",
+                        value: parseInt(context.req.query["num"])
                     }
                 ]
             };

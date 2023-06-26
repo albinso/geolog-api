@@ -1,11 +1,10 @@
 import httpTrigger from "../index";
-import { Context } from "@azure/functions";
 
 describe("Test for Demo Function", () => {
-  let context: Context;
+  let context;
 
   beforeEach(() => {
-    context = ({ log: jest.fn() } as unknown) as Context;
+    context = ({ log: jest.fn() });
     context.bindings = { cosmosDBOutput: null};
     context.req = { query: {} };
   });
