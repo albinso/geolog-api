@@ -16,13 +16,13 @@ export default async function (context, req) {
             const cosmosClient = new CosmosClient(process.env["MyAccount_COSMOSDB"]);
             const { database } = await cosmosClient.databases.createIfNotExists({ id: "GeoLog" });
             const { container } = await database.containers.createIfNotExists({
-                id: "positions",
+                id: "locations",
                 partitionKey: {
                     paths: "/id"
                 }
             });
 
-            let queryString = "SELECT * FROM positions p WHERE p.timestamp > @minTimestamp AND p.timestamp < @maxTimestamp AND p.latitude > @minLatitude AND p.latitude < @maxLatitude AND p.longitude > @minLongitude AND p.longitude < @maxLongitude";
+            let queryString = "SELECT * FROM locations p WHERE p.timestamp > @minTimestamp AND p.timestamp < @maxTimestamp AND p.latitude > @minLatitude AND p.latitude < @maxLatitude AND p.longitude > @minLongitude AND p.longitude < @maxLongitude";
             if(context.req.query["num"]) {
                 numToGet = context.req.query["num"];
                 queryString += " ORDER BY p.timestamp DESC OFFSET 0 LIMIT @num";

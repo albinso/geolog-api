@@ -20,7 +20,7 @@
       "name": "cosmosDBOutput",
       "type": "cosmosDB",
       "databaseName": "GeoLog",
-      "collectionName": "positions",
+      "collectionName": "locations",
       "createIfNotExists": true,
       "connectionStringSetting": "MyAccount_COSMOSDB",
       "direction": "out"
