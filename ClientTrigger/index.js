@@ -68,6 +68,8 @@ export default async function (context, req) {
             };
             return;
         }
+        context.log('Processed request with body: ');
+        context.log(filteredBody);
         context.res = {
             status: 200, /* Defaults to 200 */
             body: filteredBody
