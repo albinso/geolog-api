@@ -72,7 +72,7 @@ export default async function (context, req) {
             status: 200, /* Defaults to 200 */
             body: filteredBody
         };
-        if(filteredBody.crypto) {
+        if(filteredBody.crypto || (filteredBody.length && filteredBody.length > 0 && filteredBody[0].crypto)) {
             context.bindings.encryptedDBOutput = req.body;
         } else {
             context.bindings.cosmosDBOutput = req.body;
