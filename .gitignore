@@ -83,7 +83,6 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-.vscode/
 
 # TypeScript output
 dist
@@ -99,3 +98,6 @@ local.settings.json
 __blobstorage__
 __queuestorage__
 __azurite_db*__.json
+
+.vscode/*
+.vscode/

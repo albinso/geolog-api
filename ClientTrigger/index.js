@@ -9,8 +9,6 @@ export default async function (context, req) {
         const filteredBody = req.body;
 
         let numToGet = 1;
-        
-
 
         if (!filteredBody) {
             const cosmosClient = new CosmosClient(process.env["MyAccount_COSMOSDB"]);
@@ -24,7 +22,7 @@ export default async function (context, req) {
 
             let queryString = "SELECT * FROM locations p WHERE p.timestamp > @minTimestamp AND p.timestamp < @maxTimestamp AND p.latitude > @minLatitude AND p.latitude < @maxLatitude AND p.longitude > @minLongitude AND p.longitude < @maxLongitude";
             if(context.req.query["num"]) {
-                numToGet = context.req.query["num"];
+                numToGet = parseInt(context.req.query["num"]);
                 queryString += " ORDER BY p.timestamp DESC OFFSET 0 LIMIT @num";
             } 
             const querySpec = {
@@ -56,7 +54,7 @@ export default async function (context, req) {
                     },
                     {
                         name: "@num",
-                        value: parseInt(context.req.query["num"])
+                        value: parseInt(numToGet)
                     }
                 ]
             };
@@ -74,7 +72,11 @@ export default async function (context, req) {
             status: 200, /* Defaults to 200 */
             body: filteredBody
         };
-        context.bindings.cosmosDBOutput = req.body;
+        if(filteredBody.crypto) {
+            context.bindings.encryptedDBOutput = req.body;
+        } else {
+            context.bindings.cosmosDBOutput = req.body;
+        }
     }
     catch (error) {
         context.log("Failed to process request", error);

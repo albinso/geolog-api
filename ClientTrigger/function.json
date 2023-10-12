@@ -24,6 +24,15 @@
       "createIfNotExists": true,
       "connectionStringSetting": "MyAccount_COSMOSDB",
       "direction": "out"
+    },
+    {
+      "name": "encryptedDBOutput",
+      "type": "cosmosDB",
+      "databaseName": "GeoLog",
+      "collectionName": "encryptedlocations",
+      "createIfNotExists": true,
+      "connectionStringSetting": "MyAccount_COSMOSDB",
+      "direction": "out"
     }
   ]
 }
